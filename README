@@ -1,0 +1,9 @@
+Initial creation of empty repository for hypclipse plugin.
+
+This is a plugin for eclipse, which purpose is to create
+development environment for custom HQ plugin development.
+
+More info is available from github wiki and under eclipse
+documentation framework once hypclipse plugin is deployed.
+
+Source code for this plugin is coming later.
