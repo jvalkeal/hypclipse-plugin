@@ -1,0 +1,22 @@
+1.0.0
+ - Initial release
+
+1.0.1
+ - Bug which allowed to add wrong agent bundle path.
+
+1.0.2
+ - Global server element not always created.
+ - Incompatible with jre 1.5.
+ - hq-plugin markers gives NPE.
+ - Modifying xml from text editor resets structure tree.
+
+1.0.3
+ - Inform user if export operation fails.
+ - Confirm to overwrite exported file.
+ - Add text editor settings to preferences framework. 
+
+1.0.4
+ - Audit Relax NG schema annonations.
+ - Attributes "annotation info" is not shown.
+ - Attributes "mandatory info" is not shown.
+ - Add operation to structure tree.
