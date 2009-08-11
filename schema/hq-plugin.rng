@@ -1,0 +1,789 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Created with Liquid XML Studio 6.1.18.0 - FREE Community Edition (http://www.liquid-technologies.com) -->
+<rng:grammar xmlns:rng="http://relaxng.org/ns/structure/1.0" ns="" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">
+	<rng:start>
+		<rng:ref name="plugin" />
+	</rng:start>
+	<rng:define name="plugin">
+		<rng:element name="plugin">
+			<rng:ref name="productType" />
+			<a:documentation>
+The plugin tag is root level element in hq-plugins.xml file.
+</a:documentation>
+		</rng:element>
+	</rng:define>
+	<rng:define name="productGroup">
+		<rng:choice>
+			<rng:element name="script">
+				<rng:ref name="scriptType" />
+				<a:documentation>
+If using scripts, those can be embedded to xml file.
+</a:documentation>
+			</rng:element>
+			<rng:element name="config">
+				<rng:ref name="configType" />
+			</rng:element>
+			<rng:element name="property">
+				<rng:ref name="propertyType" />
+			</rng:element>
+			<rng:element name="filter">
+				<a:documentation>
+Define filter values which are then replaced withing xml file.
+</a:documentation>
+				<rng:ref name="filterType" />
+			</rng:element>
+			<rng:optional>
+				<rng:element name="classpath">
+					<rng:ref name="classpathType" />
+					<a:documentation>
+Adding extra jars to plugins classpath. Path is always relative to hq installpath. 
+There is however two exceptions to this rule. Incase path starts either server/default 
+or server/all, path is found under hq-engine on server side.
+</a:documentation>
+				</rng:element>
+			</rng:optional>
+			<rng:element name="help">
+				<rng:ref name="helpType" />
+				<a:documentation>
+Help sections which are visible on HQ UI.
+</a:documentation>
+			</rng:element>
+			<rng:element name="server">
+				<rng:ref name="serverType" />
+				<a:documentation>
+Defines a server resource type.
+</a:documentation>
+			</rng:element>
+			<rng:element name="metrics">
+				<rng:ref name="metricsType" />
+				<a:documentation>
+Groups metric tags. Top-level metrics element is not used anywhere unless it's included 
+in metrics element under server or service elements. When defining server or services, 
+it's possible to make reference to these metrics.
+</a:documentation>
+			</rng:element>
+			<rng:element name="properties">
+				<rng:ref name="propertiesType" />
+			</rng:element>
+			<rng:element name="plugin">
+				<rng:ref name="pluginType" />
+			</rng:element>
+		</rng:choice>
+	</rng:define>
+	<rng:define name="productType">
+		<a:documentation>
+Combination of allowed elements directly under root plugin tag. Non of the elements are 
+actually required, but most of the elements can be placed on any order and any number or 
+times. Exception is classpath which is allowed maximum of 1 time.
+</a:documentation>
+		<rng:zeroOrMore>
+			<rng:choice>
+				<rng:ref name="productGroup" />
+				<rng:element name="platform">
+					<rng:zeroOrMore>
+						<rng:choice>
+							<rng:ref name="productGroup" />
+							<rng:element name="metric">
+								<rng:ref name="metricType" />
+							</rng:element>
+						</rng:choice>
+					</rng:zeroOrMore>
+					<rng:optional>
+						<rng:attribute name="name">
+							<a:documentation>
+Name of the platform.
+</a:documentation>
+							<rng:data type="string" />
+						</rng:attribute>
+					</rng:optional>
+				</rng:element>
+			</rng:choice>
+		</rng:zeroOrMore>
+		<rng:optional>
+			<rng:attribute name="name">
+				<rng:data type="string" />
+			</rng:attribute>
+		</rng:optional>
+		<rng:optional>
+			<rng:attribute name="class">
+				<rng:data type="string" />
+			</rng:attribute>
+		</rng:optional>
+		<rng:optional>
+			<rng:attribute name="package">
+				<rng:data type="string" />
+			</rng:attribute>
+		</rng:optional>
+	</rng:define>
+	<rng:define name="classpathType">
+		<a:documentation>
+classpath tag contains set of include elements. These are used to add content to plugins classpath.
+</a:documentation>
+		<rng:element name="include">
+			<rng:ref name="includeType" />
+		</rng:element>
+	</rng:define>
+	<rng:define name="includeType">
+		<a:documentation>
+There are lot of elements which use simple include sub-element which value is stored to name attribute.
+</a:documentation>
+		<rng:optional>
+			<rng:attribute name="name">
+				<a:documentation>
+Value of this include field is stored to name attribute.
+</a:documentation>
+				<rng:data type="string" />
+			</rng:attribute>
+		</rng:optional>
+	</rng:define>
+	<rng:define name="scriptType">
+		<a:documentation>
+May be used to include a script a plugin uses in the XML descriptor. Scripts used by a plugin 
+can reside within the descriptor or in the filesystem. Scripts included in the descriptor 
+are deployed under pdk/scripts prefix.
+</a:documentation>
+		<rng:attribute name="name">
+			<rng:data type="string" />
+		</rng:attribute>
+		<rng:text />
+	</rng:define>
+	<rng:define name="propertyType">
+		<a:documentation>
+The property tag acts like a filter, but is also saved for use within the plugin code itself.
+</a:documentation>
+		<rng:attribute name="name">
+			<a:documentation>
+Name of property.
+</a:documentation>
+			<rng:data type="string" />
+		</rng:attribute>
+		<rng:attribute name="value">
+			<a:documentation>
+Value of property.
+</a:documentation>
+			<rng:data type="string" />
+		</rng:attribute>
+		<rng:optional>
+			<rng:attribute name="description">
+				<a:documentation>
+Description of this property.
+</a:documentation>
+				<rng:data type="string" />
+			</rng:attribute>
+		</rng:optional>
+	</rng:define>
+	<rng:define name="filterType">
+		<a:documentation>
+filter tags are used to store name-value pairs which are then used to replace variables 
+inside xml file. This is done at runtime within HQ. This tag can also contain text.
+</a:documentation>
+		<rng:attribute name="name">
+			<a:documentation>
+Name of the filter.
+</a:documentation>
+		</rng:attribute>
+		<rng:attribute name="value">
+			<a:documentation>
+Value of the filter.
+</a:documentation>
+		</rng:attribute>
+	</rng:define>
+	<rng:define name="metricsType">
+		<a:documentation>
+The metrics tag is used for grouping metric tags, allowing you to define metrics in 
+one place and include them elsewhere in the file. This grouping carries over to the UI.
+If used as a reference, remember to place this before the other elements. 
+</a:documentation>
+		<rng:zeroOrMore>
+			<rng:choice>
+				<rng:element name="metric">
+					<rng:ref name="metricType" />
+				</rng:element>
+				<rng:element name="include">
+					<rng:ref name="includeType" />
+				</rng:element>
+			</rng:choice>
+		</rng:zeroOrMore>
+		<rng:optional>
+			<rng:attribute name="name">
+				<a:documentation>
+Name for metrics element. This name is used as reference if this section is included from other elements.
+</a:documentation>
+				<rng:data type="string" />
+			</rng:attribute>
+		</rng:optional>
+		<rng:optional>
+			<rng:attribute name="include">
+				<a:documentation>
+If other metrics elements are included, this fiels is used to give a name to be included.
+</a:documentation>
+				<rng:data type="string" />
+			</rng:attribute>
+		</rng:optional>
+	</rng:define>
+	<rng:define name="metricType">
+		<a:documentation>
+Defines type to store metric attributes.
+</a:documentation>
+		<rng:attribute name="name">
+			<a:documentation>
+Name of the metric shown in the HQ UI.
+</a:documentation>
+			<rng:data type="string" />
+		</rng:attribute>
+		<rng:optional>
+			<rng:attribute name="alias">
+				<a:documentation>
+Abbreviated name of the metric, displayed in the plugin output (name-value pairs). In the 
+case of a JMX measurement plugin, alias must exactly match the mbean attribute name.
+</a:documentation>
+				<rng:data type="string" />
+			</rng:attribute>
+		</rng:optional>
+		<rng:optional>
+			<rng:attribute name="template">
+				<a:documentation>
+The template attribute specifies the information required to obtain a specific metric. Every metric
+must have a template. However, template attribute may not always be defined within the
+'metric' element. Often, template is defined in the root of a descriptor, using variables whose
+values are assigned in resource elements.
+</a:documentation>
+				<rng:data type="string" />
+			</rng:attribute>
+		</rng:optional>
+		<rng:optional>
+			<rng:attribute name="category">
+				<a:documentation>
+The category of metric. The value determines where a metric appears on pages that organize
+metrics by category, specifically on these pages in the HQ UI: Metric Data tab for a
+resource Monitoring Defaults page for a resource type.
+</a:documentation>
+				<rng:ref name="categoryType" />
+			</rng:attribute>
+		</rng:optional>
+		<rng:optional>
+			<rng:attribute name="indicator">
+				<a:documentation>
+Whether or not this metric is an indicator metric in HQ. Indicator metrics are charted on a
+resources Indicators tab in the HQ UI.
+</a:documentation>
+				<rng:data type="boolean" />
+			</rng:attribute>
+		</rng:optional>
+		<rng:optional>
+			<rng:attribute name="defaultOn">
+				<a:documentation>
+Controls whether or not the metric is collected by default. If indicator attribute is set to true, this defaults to true, otherwise defaults to false.
+</a:documentation>
+				<rng:data type="boolean" />
+			</rng:attribute>
+		</rng:optional>
+		<rng:optional>
+			<rng:attribute name="collectionType">
+				<a:documentation>
+Describes the behavior of a metric's values over time. For example, the value of "Requests
+Served" will trend up as more and more requests are counted over time.
+</a:documentation>
+				<rng:ref name="collectionTypeType" />
+			</rng:attribute>
+		</rng:optional>
+		<rng:optional>
+			<rng:attribute name="units">
+				<a:documentation>
+The units of measurement of the metric, which affects how metric values are formatted in
+the HQ user interface.
+</a:documentation>
+				<rng:ref name="unitsType" />
+			</rng:attribute>
+		</rng:optional>
+		<rng:optional>
+			<rng:attribute name="rate">
+				<a:documentation>
+Specifies the time period for a rate measurement. Valid only for metrics whose collectionType is
+trendsup or trendsdown.
+</a:documentation>
+				<rng:ref name="rateType" />
+			</rng:attribute>
+		</rng:optional>
+		<rng:optional>
+			<rng:attribute name="group">
+				<a:documentation>
+TBD
+</a:documentation>
+				<rng:data type="string">
+					<a:documentation>
+Currently unused by the server, in the future this attribute will used to group measurements in the UI.
+</a:documentation>
+				</rng:data>
+			</rng:attribute>
+		</rng:optional>
+		<rng:optional>
+			<rng:attribute name="interval">
+				<a:documentation>
+Default collection interval.
+</a:documentation>
+				<rng:data type="positiveInteger" />
+			</rng:attribute>
+		</rng:optional>
+	</rng:define>
+	<rng:define name="unitsType">
+		<a:documentation>
+Denotes list of possible values withing units space.
+</a:documentation>
+		<rng:choice>
+			<rng:value>none</rng:value>
+			<rng:value>percent</rng:value>
+			<rng:value>percentage</rng:value>
+			<rng:value>B</rng:value>
+			<rng:value>KB</rng:value>
+			<rng:value>MB</rng:value>
+			<rng:value>GB</rng:value>
+			<rng:value>TB</rng:value>
+			<rng:value>PB</rng:value>
+			<rng:value>bytesToBits</rng:value>
+			<rng:value>b</rng:value>
+			<rng:value>Kb</rng:value>
+			<rng:value>Mb</rng:value>
+			<rng:value>Gb</rng:value>
+			<rng:value>Tb</rng:value>
+			<rng:value>Pb</rng:value>
+			<rng:value>epoch-millis</rng:value>
+			<rng:value>epoch-seconds</rng:value>
+			<rng:value>ns</rng:value>
+			<rng:value>mu</rng:value>
+			<rng:value>ms</rng:value>
+			<rng:value>jiffys</rng:value>
+			<rng:value>sec</rng:value>
+			<rng:value>cents</rng:value>
+		</rng:choice>
+	</rng:define>
+	<rng:define name="categoryType">
+		<a:documentation>
+This SimpleType denotes list of possible values withing category space.
+</a:documentation>
+		<rng:choice>
+			<rng:value>AVAILABILITY</rng:value>
+			<rng:value>UTILIZATION</rng:value>
+			<rng:value>THROUGHPUT</rng:value>
+			<rng:value>PERFORMANCE</rng:value>
+		</rng:choice>
+	</rng:define>
+	<rng:define name="rateType">
+		<a:documentation>
+Denotes list of possible values withing rates space.
+</a:documentation>
+		<rng:choice>
+			<rng:value>1s</rng:value>
+			<rng:value>1m</rng:value>
+			<rng:value>1h</rng:value>
+			<rng:value>none</rng:value>
+		</rng:choice>
+	</rng:define>
+	<rng:define name="collectionTypeType">
+		<a:documentation>
+Denotes list of possible values withing collectionType space.
+</a:documentation>
+		<rng:choice>
+			<rng:value>dynamic</rng:value>
+			<rng:value>static</rng:value>
+			<rng:value>trendsup</rng:value>
+			<rng:value>trendsdown</rng:value>
+		</rng:choice>
+	</rng:define>
+	<rng:define name="helpType">
+		<a:documentation>
+The help tag is intended for products ("resource types," in HQ parlance) that require changes 
+for enabling monitoring. The help text is displayed on the "Resource Configuration" screen to 
+notify users of actions they must take before monitoring a particular resource type.
+</a:documentation>
+		<rng:optional>
+			<rng:attribute name="name">
+				<rng:data type="string" />
+			</rng:attribute>
+		</rng:optional>
+		<rng:optional>
+			<rng:attribute name="include">
+				<rng:data type="string" />
+			</rng:attribute>
+		</rng:optional>
+		<rng:optional>
+			<rng:attribute name="append">
+				<rng:data type="string" />
+			</rng:attribute>
+		</rng:optional>
+		<rng:text />
+	</rng:define>
+	<rng:define name="serverType">
+		<a:documentation>
+Used to define server sections under HQ inventory model.
+</a:documentation>
+		<rng:zeroOrMore>
+			<rng:choice>
+				<rng:element name="scan">
+					<a:documentation>
+Either attribute type or registry.
+</a:documentation>				
+					<rng:ref name="scanType" />
+					<rng:optional>
+						<rng:attribute name="type">
+							<rng:data type="string" />
+						</rng:attribute>
+					</rng:optional>
+					<rng:optional>
+						<rng:attribute name="registry">
+							<rng:data type="string" />
+						</rng:attribute>
+					</rng:optional>
+				</rng:element>
+				<rng:element name="service">
+					<a:documentation>
+Annotation for service element.
+</a:documentation>
+					<rng:ref name="serviceType" />
+				</rng:element>
+				<rng:ref name="commonServerServiceGroup" />
+			</rng:choice>
+		</rng:zeroOrMore>
+		<rng:ref name="commonServerServiceAttrGroup" />
+		<rng:optional>
+			<rng:attribute name="virtual">
+				<a:documentation>
+This attribute is used only in the hq-netservices plugin. It is used to indicate that the server type is virtual -
+that is, an instance is explicitly configured simply to the parent of remote services that the agent monitors
+over the network.
+</a:documentation>
+				<rng:data type="boolean" />
+			</rng:attribute>
+		</rng:optional>
+	</rng:define>
+	<rng:define name="serviceType">
+		<a:documentation>
+Storing information about service resource type.
+</a:documentation>
+		<rng:zeroOrMore>
+			<rng:choice>
+				<rng:ref name="commonServerServiceGroup" />
+			</rng:choice>
+		</rng:zeroOrMore>
+		<rng:ref name="commonServerServiceAttrGroup" />
+		<rng:optional>
+			<rng:attribute name="internal">
+				<a:documentation>
+Used to specify that the service type is internal.
+</a:documentation>
+				<rng:data type="boolean" />
+			</rng:attribute>
+		</rng:optional>
+	</rng:define>
+	<rng:define name="propertiesType">
+		<a:documentation>
+Generally &lt;properties&gt; tag is used to store properties. Property values which 
+are defined outside of tag has different meaning to HQ. Generally these are 
+informative values shown in UI. 
+</a:documentation>
+		<rng:zeroOrMore>
+			<rng:choice>
+				<rng:element name="property">
+					<rng:optional>
+						<rng:attribute name="name" />
+					</rng:optional>
+					<rng:optional>
+						<rng:attribute name="description" />
+					</rng:optional>
+					<rng:optional>
+						<rng:attribute name="type">
+							<rng:ref name="typeType" />
+						</rng:attribute>
+					</rng:optional>
+				</rng:element>
+			</rng:choice>
+		</rng:zeroOrMore>
+	</rng:define>
+	<rng:define name="actionsType">
+		<a:documentation>
+Define possible control actions used by plugins. 
+</a:documentation>
+		<rng:optional>
+			<rng:attribute name="include">
+				<rng:data type="string">
+					<a:documentation>
+Comma separated list of action names.
+</a:documentation>
+				</rng:data>
+			</rng:attribute>
+		</rng:optional>
+		<rng:optional>
+			<rng:attribute name="platform">
+				<rng:ref name="platformsType" />
+				<a:documentation>
+Define platform if actions differs between available platforms. Currently either Win32 or Unix.
+</a:documentation>
+			</rng:attribute>
+		</rng:optional>
+	</rng:define>
+	<rng:define name="pluginType">
+		<rng:attribute name="type">
+			<a:documentation>
+Defines a function that the plugin performs for a resource type, and the class that it uses to perform the function.
+</a:documentation>
+			<rng:choice>
+				<rng:value>measurement</rng:value>
+				<rng:value>log_track</rng:value>
+				<rng:value>autoinventory</rng:value>
+				<rng:value>control</rng:value>
+				<rng:value>responsetime</rng:value>
+				<rng:value>config_track</rng:value>
+				<rng:value>collector</rng:value>
+			</rng:choice>
+		</rng:attribute>
+		<rng:optional>
+			<rng:attribute name="class">
+				<a:documentation>
+Classname where this plugin type is located.
+</a:documentation>
+				<rng:data type="string" />
+			</rng:attribute>
+		</rng:optional>
+		<rng:optional>
+			<rng:attribute name="platform">
+				<a:documentation>
+Defines a platform type if this is restricted to spesific environments.
+</a:documentation>
+				<rng:ref name="platformsType" />
+			</rng:attribute>
+		</rng:optional>
+	</rng:define>
+	<rng:define name="scanType">
+		<a:documentation>
+The scan tag is a container for specifying file name patterns and registry keys used for server autodiscovery.
+</a:documentation>
+		<rng:zeroOrMore>
+			<rng:element name="include">
+				<rng:ref name="includeType" />
+			</rng:element>
+		</rng:zeroOrMore>
+	</rng:define>
+	<rng:define name="configType">
+		<a:documentation>
+Many configuration property values are populated automatically by HQ through auto-discovery. 
+Config element contains a set of &lt;option&gt; elements. The options you define are 
+displayed on the Configuration Properties page for instances of the resource type.
+</a:documentation>
+		<rng:zeroOrMore>
+			<rng:choice>
+				<rng:element name="option">
+					<rng:ref name="optionType" />
+				</rng:element>
+				<rng:element name="include">
+					<rng:ref name="includeType" />
+				</rng:element>
+			</rng:choice>
+		</rng:zeroOrMore>
+		<rng:optional>
+			<rng:attribute name="include">
+				<a:documentation>
+If config section is including other config sections, use the reference name.
+</a:documentation>
+				<rng:data type="string" />
+			</rng:attribute>
+		</rng:optional>
+		<rng:optional>
+			<rng:attribute name="type">
+				<a:documentation>
+Where the options it defines appear on a resource's Configuration Properties page, 
+and whether the schema is globally available. If you do not include the type attribute
+in a config element, the options it defines will appear in the "Shared" section of the 
+Configuration Properties page.
+</a:documentation>
+				<rng:choice>
+					<rng:value>global</rng:value>
+					<rng:value>control</rng:value>
+					<rng:value>measurement</rng:value>
+				</rng:choice>
+			</rng:attribute>
+		</rng:optional>
+		<rng:optional>
+			<rng:attribute name="platform">
+				<rng:ref name="platformsType" />
+				<a:documentation>
+Certain config schemas have different options depending on the platform. For example, 
+Unix platforms generally use scripts for control actions, where the same product on 
+Win32 may use the Windows service manager.
+</a:documentation>
+			</rng:attribute>
+		</rng:optional>
+		<rng:optional>
+			<rng:attribute name="name">
+				<a:documentation>
+Name of the config element. This name is used as reference if it's included to other config sections.
+</a:documentation>
+				<rng:data type="string" />
+			</rng:attribute>
+		</rng:optional>
+	</rng:define>
+	<rng:define name="optionType">
+		<rng:zeroOrMore>
+			<rng:choice>
+				<rng:element name="include">
+					<rng:ref name="includeType" />
+				</rng:element>
+			</rng:choice>
+		</rng:zeroOrMore>
+		<rng:attribute name="name">
+			<a:documentation>
+Specifies the option name.
+</a:documentation>
+			<rng:data type="string" />
+		</rng:attribute>
+		<rng:optional>
+			<rng:attribute name="description">
+				<a:documentation>
+Text description, shown in the Configuration Properties page.
+</a:documentation>
+				<rng:data type="string" />
+			</rng:attribute>
+		</rng:optional>
+		<rng:optional>
+			<rng:attribute name="default">
+				<a:documentation>
+Specifies the default value for the option, shown in the Configuration Properties page.
+</a:documentation>
+				<rng:data type="string" />
+			</rng:attribute>
+		</rng:optional>
+		<rng:optional>
+			<rng:attribute name="optional">
+				<a:documentation>
+May be used to specify that the option is not required.
+</a:documentation>
+				<rng:data type="string" />
+			</rng:attribute>
+		</rng:optional>
+		<rng:optional>
+			<rng:attribute name="type">
+				<a:documentation>
+Optionally can be used to specify rules for the option value. You can specify a data type, and exclude it from
+the Configuration Properties page.
+</a:documentation>
+				<rng:choice>
+					<rng:value>string</rng:value>
+					<rng:value>int</rng:value>
+					<rng:value>double</rng:value>
+					<rng:value>secret</rng:value>
+					<rng:value>hidden</rng:value>
+					<rng:value>port</rng:value>
+					<rng:value>boolean</rng:value>
+					<rng:value>ipaddress</rng:value>
+					<rng:value>macaddress</rng:value>
+					<rng:value>enum</rng:value>
+					<rng:value>stringarray</rng:value>
+				</rng:choice>
+			</rng:attribute>
+		</rng:optional>
+	</rng:define>
+	<rng:define name="typeType">
+		<rng:choice>
+			<rng:value>string</rng:value>
+			<rng:value>int</rng:value>
+			<rng:value>double</rng:value>
+			<rng:value>secret</rng:value>
+			<rng:value>hidden</rng:value>
+			<rng:value>port</rng:value>
+			<rng:value>boolean</rng:value>
+			<rng:value>ipaddress</rng:value>
+			<rng:value>macaddress</rng:value>
+			<rng:value>enum</rng:value>
+			<rng:value>stringarray</rng:value>
+		</rng:choice>
+	</rng:define>
+	<rng:define name="platformsType">
+		<a:documentation>
+This SimpleType is used to check validity of pattern. Valid pattern has comma delimited 
+values of strings 'Unix' or 'Win32'. Note that this regex match lonely comma in end of 
+the string. This would be prevented using positive lookahead, but support for those regex patterns are not reliable.
+</a:documentation>
+		<rng:data type="string" />
+	</rng:define>
+	<rng:define name="commonServerServiceGroup">
+		<rng:choice>
+			<rng:element name="filter">
+				<rng:ref name="filterType" />
+				<a:documentation>
+Filter is used to define variables which are replaced with the xml file.
+</a:documentation>
+			</rng:element>
+			<rng:element name="help">
+				<rng:ref name="helpType" />
+				<a:documentation>
+Help section. Encapsulate it withing CDATA. If editing via GUI, CDATA tag is automatically inserted.
+</a:documentation>
+			</rng:element>
+			<rng:element name="properties">
+				<rng:ref name="propertiesType" />
+			</rng:element>
+			<rng:element name="metric">
+				<rng:ref name="metricType" />
+			</rng:element>
+			<rng:element name="metrics">
+				<rng:ref name="metricsType" />
+			</rng:element>
+			<rng:element name="config">
+				<rng:ref name="configType" />
+			</rng:element>
+			<rng:element name="property">
+				<rng:ref name="propertyType" />
+			</rng:element>
+			<rng:element name="actions">
+				<rng:ref name="actionsType" />
+			</rng:element>
+			<rng:element name="plugin">
+				<rng:ref name="pluginType" />
+			</rng:element>
+		</rng:choice>
+	</rng:define>
+	<rng:define name="commonServerServiceAttrGroup">
+		<rng:optional>
+			<rng:attribute name="name">
+				<a:documentation>
+Name of the resource type.
+</a:documentation>
+				<rng:data type="string" />
+			</rng:attribute>
+		</rng:optional>
+		<rng:optional>
+			<rng:attribute name="version">
+				<a:documentation>
+It's possible to add version information for related server. It's not necessary to 
+use it, but handy when creating servers with different versions. Example of this is 
+like Webserv 3.x vs. Webserv 4.x. Two server elements may have same name if version id's are different.
+</a:documentation>
+				<rng:data type="string" />
+			</rng:attribute>
+		</rng:optional>
+		<rng:optional>
+			<rng:attribute name="description">
+				<a:documentation>
+Short description of this server type.
+</a:documentation>
+				<rng:data type="string" />
+			</rng:attribute>
+		</rng:optional>
+		<rng:optional>
+			<rng:attribute name="platforms">
+				<rng:ref name="platformsType" />
+				<a:documentation>
+It's possible to pass information to plugin whether this plugin is supported on windows or on unix.
+</a:documentation>
+			</rng:attribute>
+		</rng:optional>
+		<rng:optional>
+			<rng:attribute name="include">
+				<a:documentation>
+It's possible to extend other server. For example, usually 4.x has same set of features 
+as 3.x. So include other version and add new stuff for 4.x. Look more from related version attribute.
+</a:documentation>
+				<rng:data type="string" />
+			</rng:attribute>
+		</rng:optional>
+	</rng:define>
+</rng:grammar>

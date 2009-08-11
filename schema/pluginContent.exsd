@@ -1,0 +1,143 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="org.hyperic.hypclipse" xmlns="http://www.w3.org/2001/XMLSchema">
+<annotation>
+      <appinfo>
+         <meta.schema plugin="org.hyperic.hypclipse" id="pluginContent" name="Plug-in Content Wizards"/>
+      </appinfo>
+      <documentation>
+         This extension point provides for contributing wizards that create additional content of the PDE plug-in projects.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <annotation>
+         <appinfo>
+            <meta.element />
+         </appinfo>
+      </annotation>
+      <complexType>
+         <sequence>
+            <element ref="wizard" minOccurs="0" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="wizard">
+      <complexType>
+         <sequence>
+            <element ref="description" minOccurs="0" maxOccurs="1"/>
+         </sequence>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  a unique name that will be used to identify this wizard.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  a translatable name that will be used in UI representation
+of this wizard.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="class" type="string" use="required">
+            <annotation>
+               <documentation>
+                  a fully qualified name of a class which implements 
+&lt;samp&gt;org.hyperic.hypclipse.plugin.IPluginContentWizard&lt;/samp&gt;.
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn="org.eclipse.jface.Wizard:org.hyperic.hypclipse.plugin.IPluginContentWizard"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="ui-content" type="boolean" use="default" value="true">
+            <annotation>
+               <documentation>
+                  a flag that indicates if the wizard will contribute code with user interface content. This flag will affect which plug-in class will be picked since (UI plug-ins extend &lt;code&gt;AbstractUIPlugin&lt;/code&gt; class, while non-UI plug-ins extends &lt;code&gt;Plugin&lt;/code&gt; base class). Since many contributions to Eclipse have UI content, this attribute is &lt;code&gt;true&lt;/code&gt; by default.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="default" type="boolean" use="default" value="false">
+            <annotation>
+               <documentation>
+                  This attribute defines if wizard is trieted as default wizard. Only one wizard may be as default one. If there are more that one wizards marked as default, previous will be overwritten. If setted to true, wizard is not visible in lists. Default wizard is executed if used doesn&apos;t select any wizards.
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="description" type="string">
+      <annotation>
+         <appinfo>
+            <meta.element translatable="true"/>
+         </appinfo>
+      </annotation>
+   </element>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="since"/>
+      </appinfo>
+      <documentation>
+         [Enter the first release in which this extension point appears.]
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="examples"/>
+      </appinfo>
+      <documentation>
+         [Enter extension point usage example here.]
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="apiinfo"/>
+      </appinfo>
+      <documentation>
+         [Enter API information here.]
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="implementation"/>
+      </appinfo>
+      <documentation>
+         [Enter information about supplied implementation of this extension point.]
+      </documentation>
+   </annotation>
+
+
+</schema>

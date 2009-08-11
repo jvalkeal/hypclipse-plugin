@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.contexts"?>
+<contexts>
+
+
+	<context id="new_project_structure_page">
+		<description>This wizard helps you create a new HQ plug-in project.</description>
+		<topic label="Plug-in Project Structure" 
+			   href="help/html/subtopic.html"/>
+	</context>
+ <context id="new_project_required_data">
+    <description>Fill information related to HQ.</description>
+ </context>
+ <context id="new_project_code_gen_page">
+    <description>Select wizard to create project. To have an empty project, just don&apos;t select a wizard.</description>
+ </context>
+ <context id="template_custom_auto_inventory">
+    <description>This template page asks various parameters which are used to create xml descriptor for custom inventory.</description>
+ </context>
+ <context id="template_auto_inventory">
+    <description>This template page asks various parameters which are used to create xml descriptor for basic inventory.</description>
+ </context>
+ <context id="template_basic_process_metrics">
+    <description>This template page asks config option name used for PTQL query.</description>
+ </context>
+ <context id="template_multi_process_metrics">
+    <description>This template page asks config option name used for PTQL query.</description>
+ </context>
+ <context id="template_win_perf_count">
+    <description>This template page ask if during xml descriptor creation filter tags are used.</description>
+ </context>
+ <context id="template_custom_platform_service">
+    <description>This page asks names of detector and collector.</description>
+ </context>
+ <context id="preferences_new_hqenv_page">
+    <description>Specify HQ agent bundle location and name. Example location is &quot;$HQHOME$/hyperic-hq-agent-4.0.2-EE/bundles/agent-4.0.2-EE-940&quot;</description>
+ </context>
+ <context id="plugin_export_wizard">
+    <description>Specify a destination directory for exported plugin. Enable checkbox if you want export to notify if file is about to overwritten.</description>
+ </context>
+ <context id="preference_main_page">
+    <description>Set plugin general settings.</description>
+ </context>
+ <context id="preference_editors_page">
+    <description>Set settings for text editors.</description>
+ </context>
+ <context id="preference_envs_page">
+    <description>Define locations of HQ agent bundles.</description>
+ </context>
+ <context id="structure_selection_page">
+    <description>Add a new structure to model. Global denotes adding to root of the model. Others denotes possible choices under selected node.</description>
+ </context>
+
+</contexts>
+	

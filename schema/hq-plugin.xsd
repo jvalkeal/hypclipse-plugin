@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="plugin" type="productType">
+    <xs:annotation>
+      <xs:documentation>The &lt;plugin&gt; tag is root level element in hq-plugins.xml file.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:group name="productGroup">
+    <xs:choice>
+      <xs:element name="script" type="scriptType">
+        <xs:annotation>
+          <xs:documentation>If using scripts, those can be embedded to xml file.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="config" type="configType" />
+      <xs:element name="property" type="propertyType" />
+      <xs:element name="filter" type="filterType">
+        <xs:annotation>
+          <xs:documentation>Define filter values which are then replaced withing xml file.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="1" name="classpath" type="classpathType">
+        <xs:annotation>
+          <xs:documentation>Adding extra jars to plugins classpath. Path is always relative to hq installpath. There is however two exceptions to this rule. Incase path starts either server/default or server/all, path is found under hq-engine on server side.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="help" type="helpType">
+        <xs:annotation>
+          <xs:documentation>Help sections which are visible on HQ UI.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="server" type="serverType">
+        <xs:annotation>
+          <xs:documentation>Defines a server resource type.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="metrics" type="metricsType">
+        <xs:annotation>
+          <xs:documentation>Groups &lt;metric&gt; tags. Top-level metrics element is not used anywhere unless it's included in metrics element under server or service elements. When defining server or services, it's possible to make reference to these metrics.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="properties" type="propertiesType" />
+      <xs:element name="plugin" type="pluginType" />
+    </xs:choice>
+  </xs:group>
+  <xs:complexType name="productType">
+    <xs:annotation>
+      <xs:documentation>Combination of allowed elements directly under root &lt;plugin&gt; tag. Non of the elements are actually required, but most of the elements can be placed on any order and any number or times. Exception is classpath which is allowed maximum of 1 time.</xs:documentation>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:group ref="productGroup" />
+      <xs:element name="platform">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:group ref="productGroup" />
+            <xs:element name="metric" type="metricType" />
+          </xs:choice>
+          <xs:attribute name="name" type="xs:string" />
+        </xs:complexType>
+      </xs:element>
+    </xs:choice>
+    <xs:attribute name="name" type="xs:string" />
+    <xs:attribute name="class" type="xs:string" />
+    <xs:attribute name="package" type="xs:string" />
+  </xs:complexType>
+  <xs:complexType name="classpathType">
+    <xs:annotation>
+      <xs:documentation>This complextype extension is used to allow appropriate include elements under classpath. We don't allow empty set.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence maxOccurs="unbounded">
+      <xs:element name="include" type="includeType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="includeType">
+    <xs:annotation>
+      <xs:documentation>There are lot of elements which use simple include sub-element which value is stored to name attribute.</xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="name" type="xs:string" />
+  </xs:complexType>
+  <xs:complexType name="scriptType">
+    <xs:annotation>
+      <xs:documentation>Scriptfiles can be placed inside xml file. Those are then deployd under installation path. This path is then fixed and can be directly referenced from xml.</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="name" type="xs:string" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="propertyType">
+    <xs:annotation>
+      <xs:documentation>The &lt;property&gt; tag acts like a &lt;filter&gt;, but is also saved for use within the plugin code itself.</xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="name" type="xs:string" use="required" />
+    <xs:attribute name="value" type="xs:string" use="required" />
+    <xs:attribute name="description" type="xs:string" />
+  </xs:complexType>
+  <xs:complexType name="filterType">
+    <xs:annotation>
+      <xs:documentation>&lt;filter&gt; tags are used to store name-value pairs which are then used to replace variables inside xml file. This is done at runtime within HQ. This tag can also contain text.</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="name" />
+        <xs:attribute name="value" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="metricsType">
+    <xs:annotation>
+      <xs:documentation>Structure under metrics elements. The &lt;metrics&gt; tag is used for grouping metric tags, allowing you to define metrics in one place and include them elsewhere in the file. This grouping carries over to the UI.</xs:documentation>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="metric" nillable="true" type="metricType" />
+      <xs:element name="include" type="includeType" />
+    </xs:choice>
+    <xs:attribute name="name" type="xs:string" use="optional" />
+    <xs:attribute name="include" type="xs:string" />
+  </xs:complexType>
+  <xs:complexType name="metricType">
+    <xs:annotation>
+      <xs:documentation>Defines type to store metric attributes.</xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="name" type="xs:string" use="optional" />
+    <xs:attribute name="alias" type="xs:string" />
+    <xs:attribute name="template" type="xs:string" />
+    <xs:attribute name="category" type="categoryType" />
+    <xs:attribute name="indicator" type="xs:boolean" />
+    <xs:attribute name="collectionType" type="collectionTypeType" />
+    <xs:attribute name="units" type="unitsType" />
+    <xs:attribute name="rate" type="rateType" />
+    <xs:attribute name="group" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>Currently unused by the server, in the future this attribute will used to group measurements in the UI.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="interval" type="xs:positiveInteger" />
+  </xs:complexType>
+  <xs:simpleType name="unitsType">
+    <xs:annotation>
+      <xs:documentation>Denotes list of possible values withing units space.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="none" />
+      <xs:enumeration value="percent" />
+      <xs:enumeration value="percentage" />
+      <xs:enumeration value="B" />
+      <xs:enumeration value="KB" />
+      <xs:enumeration value="MB" />
+      <xs:enumeration value="GB" />
+      <xs:enumeration value="TB" />
+      <xs:enumeration value="PB" />
+      <xs:enumeration value="bytesToBits" />
+      <xs:enumeration value="b" />
+      <xs:enumeration value="Kb" />
+      <xs:enumeration value="Mb" />
+      <xs:enumeration value="Gb" />
+      <xs:enumeration value="Tb" />
+      <xs:enumeration value="Pb" />
+      <xs:enumeration value="epoch-millis" />
+      <xs:enumeration value="epoch-seconds" />
+      <xs:enumeration value="ns" />
+      <xs:enumeration value="mu" />
+      <xs:enumeration value="ms" />
+      <xs:enumeration value="jiffys" />
+      <xs:enumeration value="sec" />
+      <xs:enumeration value="cents" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="categoryType">
+    <xs:annotation>
+      <xs:documentation>This SimpleType denotes list of possible values withing category space.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="((A|a)(V|v)(A|a)(I|i)(L|l)(A|a)(B|b)(I|i)(L|l)(I|i)(T|t)(Y|y)|(U|u)(T|t)(I|i)(L|l)(I|i)(Z|z)(A|a)(T|t)(I|i)(O|o)(N|n)|(T|t)(H|h)(R|r)(O|o)(U|u)(G|g)(H|h)(P|p)(U|u)(T|t)|(P|p)(E|e)(R|r)(F|f)(O|o)(R|r)(M|m)(A|a)(N|n)(C|c)(E|e))" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="rateType">
+    <xs:annotation>
+      <xs:documentation>Denotes list of possible values withing rates space.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="1s" />
+      <xs:enumeration value="1m" />
+      <xs:enumeration value="1h" />
+      <xs:enumeration value="none" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="collectionTypeType">
+    <xs:annotation>
+      <xs:documentation>Denotes list of possible values withing collectionType space.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="dynamic" />
+      <xs:enumeration value="static" />
+      <xs:enumeration value="trendsup" />
+      <xs:enumeration value="trendsdown" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="helpType">
+    <xs:annotation>
+      <xs:documentation>The &lt;help&gt; tag is intended for products ("resource types," in HQ parlance) that require changes for enabling monitoring. The help text is displayed on the "Resource Configuration" screen to notify users of actions they must take before monitoring a particular resource type.</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="name" type="xs:string" use="optional" />
+        <xs:attribute name="include" type="xs:string" use="optional" />
+        <xs:attribute name="append" type="xs:string" use="optional" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="serverType">
+    <xs:annotation>
+      <xs:documentation>Storing information about server resource type.</xs:documentation>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="scan">
+        <xs:complexType>
+          <xs:complexContent mixed="false">
+            <xs:extension base="scanType">
+              <xs:attribute name="type" type="xs:string" />
+              <xs:attribute name="registry" type="xs:string" />
+            </xs:extension>
+          </xs:complexContent>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="service" type="serviceType" />
+      <xs:group ref="commonServerServiceGroup" />
+    </xs:choice>
+    <xs:attributeGroup ref="commonServerServiceAttrGroup" />
+    <xs:attribute name="virtual" type="xs:boolean" />
+  </xs:complexType>
+  <xs:complexType name="serviceType">
+    <xs:annotation>
+      <xs:documentation>Storing information about service resource type.</xs:documentation>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:group ref="commonServerServiceGroup" />
+    </xs:choice>
+    <xs:attributeGroup ref="commonServerServiceAttrGroup" />
+    <xs:attribute name="internal" type="xs:boolean" />
+  </xs:complexType>
+  <xs:complexType name="propertiesType">
+    <xs:annotation>
+      <xs:documentation>Generally &lt;properties&gt; tag is used to store properties. Property values which are defined outside of tag has different meaning to HQ. Generally these are informative values shown in UI. </xs:documentation>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="property">
+        <xs:complexType>
+          <xs:attribute name="name" />
+          <xs:attribute name="description" />
+          <xs:attribute name="type" type="typeType" />
+        </xs:complexType>
+      </xs:element>
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="actionsType">
+    <xs:annotation>
+      <xs:documentation>Define possible control actions used by plugins. </xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="include" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>Comma separated list of action names.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="platform" type="platformsType">
+      <xs:annotation>
+        <xs:documentation>Define platform if actions differs between available platforms. Currently either Win32 or Unix.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:complexType name="pluginType">
+    <xs:attribute name="type">
+      <xs:annotation>
+        <xs:documentation>Plugin type.</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="measurement" />
+          <xs:enumeration value="log_track" />
+          <xs:enumeration value="autoinventory" />
+          <xs:enumeration value="control" />
+          <xs:enumeration value="responsetime" />
+          <xs:enumeration value="config_track" />
+          <xs:enumeration value="collector" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="class" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>Classname where this plugin type is located.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="platform" type="platformsType" />
+  </xs:complexType>
+  <xs:complexType name="scanType">
+    <xs:annotation>
+      <xs:documentation>The &lt;scan&gt; tag is a container for specifying file name patterns and registry keys used for server autodiscovery.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="include" type="includeType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="configType">
+    <xs:annotation>
+      <xs:documentation>Many configuration property values are populated automatically by HQ through auto-discovery. Configuration properties such as password, for example, must be provided by a user.</xs:documentation>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="option" type="optionType" />
+      <xs:element name="include" type="includeType" />
+    </xs:choice>
+    <xs:attribute name="include" type="xs:string" />
+    <xs:attribute name="type" type="configTypeType" />
+    <xs:attribute name="platform" type="platformsType">
+      <xs:annotation>
+        <xs:documentation>Certain config schemas have different options depending on the platform. For example, Unix platforms generally use scripts for control actions, where the same product on Win32 may use the Windows service manager.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="name" type="xs:string" />
+  </xs:complexType>
+  <xs:simpleType name="configTypeType">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="(global|control|measurement)" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="optionType">
+    <xs:annotation>
+      <xs:documentation>Generally this will define what is visible in UI.</xs:documentation>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="include" type="includeType" />
+    </xs:choice>
+    <xs:attribute name="name" type="xs:string" use="required" />
+    <xs:attribute name="description" type="xs:string" use="optional" />
+    <xs:attribute name="default" type="xs:string" use="optional" />
+    <xs:attribute name="optional" type="xs:string" use="optional" />
+    <xs:attribute name="type" use="optional">
+      <xs:simpleType>
+        <xs:restriction base="typeType">
+          <xs:enumeration value="string" />
+          <xs:enumeration value="int" />
+          <xs:enumeration value="double" />
+          <xs:enumeration value="secret" />
+          <xs:enumeration value="hidden" />
+          <xs:enumeration value="port" />
+          <xs:enumeration value="boolean" />
+          <xs:enumeration value="ipaddress" />
+          <xs:enumeration value="macaddress" />
+          <xs:enumeration value="enum" />
+          <xs:enumeration value="stringarray" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:simpleType name="typeType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="string" />
+      <xs:enumeration value="int" />
+      <xs:enumeration value="double" />
+      <xs:enumeration value="secret" />
+      <xs:enumeration value="hidden" />
+      <xs:enumeration value="port" />
+      <xs:enumeration value="boolean" />
+      <xs:enumeration value="ipaddress" />
+      <xs:enumeration value="macaddress" />
+      <xs:enumeration value="enum" />
+      <xs:enumeration value="stringarray" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="platformsType">
+    <xs:annotation>
+      <xs:documentation>This SimpleType is used to check validity of pattern. Valid pattern has comma delimited values of strings 'Unix' or 'Win32'. Note that this regex match lonely comma in end of the string. This would be prevented using positive lookahead, but support for those regex patterns are not reliable.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="(Win32|Unix|,)+" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:group name="commonServerServiceGroup">
+    <xs:annotation>
+      <xs:documentation>This group contains common elements used both server and services.</xs:documentation>
+    </xs:annotation>
+    <xs:choice>
+      <xs:element name="filter" type="filterType">
+        <xs:annotation>
+          <xs:documentation>Filter is used to define variables which are replaced with the xml file.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="help" type="helpType">
+        <xs:annotation>
+          <xs:documentation>Help section. Encapsulate it withing CDATA. </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="properties" type="propertiesType" />
+      <xs:element name="metric" type="metricType" />
+      <xs:element name="metrics" type="metricsType" />
+      <xs:element name="config" type="configType" />
+      <xs:element name="property" type="propertyType" />
+      <xs:element name="actions" type="actionsType" />
+      <xs:element name="plugin" type="pluginType" />
+    </xs:choice>
+  </xs:group>
+  <xs:attributeGroup name="commonServerServiceAttrGroup">
+    <xs:attribute name="name" type="xs:string" use="optional">
+      <xs:annotation>
+        <xs:documentation>Name of the server resource type.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="version" type="xs:string" use="optional">
+      <xs:annotation>
+        <xs:documentation>It's possible to add version information for related server. It's not necessary to use it, but handy when creating servers with different versions. Example of this is like Webserv 3.x vs. Webserv 4.x. Two server elements may have same name if version id's are different.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="description" type="xs:string" use="optional">
+      <xs:annotation>
+        <xs:documentation>Short description of this server type.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="platforms" type="platformsType" use="optional">
+      <xs:annotation>
+        <xs:documentation>It's possible to pass information to plugin whether this plugin is supported on windows or on unix.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="include" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>It's possible to extend other server. For example, usually 4.x has same set of features as 3.x. So include other version and add new stuff for 4.x. Look more from related version attribute.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+</xs:schema>

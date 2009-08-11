@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<link rel="STYLESHEET" href="../book.css" type="text/css">
+<title>HQ Project Creation</title>
+<script type="text/javaScript" language="JavaScript" src="PLUGINS_ROOT/org.eclipse.help/livehelp.js"></script>
+</head>
+<body>
+<h1>HQ Project Creation</h1>
+
+<p>
+Project wizard will steer you through the process by asking various questions and giving user 
+a possibility to use different templates to add custom content to project. 
+</p>
+<img src="new_project_hq.png"/>
+
+<p>
+First page asks questions for project name, location, names for java source and output folders. 
+It&#39;s also possible to add project to eclipse working sets, if user is using that feature.
+</p>
+<ul>
+  <li>Project name – Unique name of the eclipse project.</li>
+  <li>Location – Where this project is located.</li>
+  <li>Source folder – Java source folder within project.</li>
+  <li>Output folder – Folder within project where eclipse is compiling java classes.</li>
+</ul> 
+<img src="new_project_creation.png"/>
+
+<p>
+Content page is asking user to fill information related to HQ.
+</p>
+<ul>
+  <li>Plug-in Name – This is a base plug-in name which will be used in descriptor file and in named jar file after export operation.</li>
+  <li>Plug-in Package – Base package name where all custom classes are created during project creation. This parameter is also used in root level plug-in tag as package attribute.</li>
+  <li>Execution Environment – Wizard allows to select which java environment used during development.</li>
+  <li>HQ Environment – Base HQ agent bundle which will be used to compile classes.</li>
+  <li>Product Plug-in – If user wants to create simple example of product plug-in class, name of the class can be given.</li>
+</ul> 
+<img src="new_project_content.png"/>
+
+<p>
+When new HQ plug-in project is created using project wizard, certain templates can be used to 
+automatically add extra content to newly created HQ plug-in. Template contains instructions 
+how to update internal models which describes HQ descriptor structures. If template is used 
+to create custom java classes, also those are included in the template structure.
+</p>
+<p>
+When basic project and HQ information is asked from user, possibility to allow wizard to 
+automatically extend plug-in features is given to user. User may select one 
+template(e.q. one auto discovered server process) for one specific need to create 
+custom HQ plug-in. Also it&#39;s possible to select multiple templates. Not all templates may not 
+be suitable to use together. In this case template list may be a little different.
+</p>
+<img src="new_project_select_template.png"/>
+
+
+</body>

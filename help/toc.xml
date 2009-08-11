@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.toc"?>
+
+<toc label="Hypclipse - HQ Plug-in Developer Guide">
+	<topic label="Getting Started"> 
+		<topic label="HQDE Overview" href="help/html/intro/overview.html"/>
+  <topic href="help/html/intro/instagentbundles.html" label="Install HQ Agent Bundles">
+  </topic> 
+	</topic>
+	<topic label="Tools">
+    <topic href="help/html/tools/new_project_creation.html" label="New HQ Project Creation Wizard">
+       <topic href="help/html/tools/newproject/plugin_new_templates.html" label="Templates">
+       </topic>
+       <topic href="help/html/tools/newproject/plugin_structure.html" label="Plug-in Project Structure">
+       </topic>
+    </topic>
+    <topic href="help/html/tools/export_wizard.html" label="Export Wizard">
+    </topic>
+    <topic href="help/html/tools/editor/editor.html" label="HQ Plug-in Editor">
+       <topic href="help/html/tools/editor/overview_tab.html" label="Overview Tab">
+       </topic>
+       <topic href="help/html/tools/editor/structure_tab.html" label="Structure Tab">
+       </topic>
+       <topic href="help/html/tools/editor/classpath_tab.html" label="Classpath Tab">
+       </topic>
+       <topic href="help/html/tools/editor/hqbuild_tab.html" label="hqbuild Tab">
+       </topic>
+       <topic href="help/html/tools/editor/hq-plugin_tab.html" label="hq-plugin Tab">
+       </topic>
+    </topic>
+    <topic href="help/html/tools/preferences.html" label="Preferences">
+    </topic>
+ </topic>
+</toc>

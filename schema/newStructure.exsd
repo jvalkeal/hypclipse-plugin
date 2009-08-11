@@ -1,0 +1,281 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="org.hyperic.hypclipse" xmlns="http://www.w3.org/2001/XMLSchema">
+<annotation>
+      <appinfo>
+         <meta.schema plugin="org.hyperic.hypclipse" id="newStructure" name="%struct.newStructure.name"/>
+      </appinfo>
+      <documentation>
+         [Enter description of this extension point.]
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <annotation>
+         <appinfo>
+            <meta.element />
+         </appinfo>
+      </annotation>
+      <complexType>
+         <choice minOccurs="0" maxOccurs="unbounded">
+            <element ref="wizard"/>
+            <element ref="category"/>
+            <element ref="editorWizard"/>
+         </choice>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="category">
+      <annotation>
+         <appinfo>
+            <meta.element labelAttribute="name"/>
+         </appinfo>
+      </annotation>
+      <complexType>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  a unique name that will be used to reference this category
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  a translatable name that will be used for UI presentation
+of this category
+               </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="parentCategory" type="string">
+            <annotation>
+               <documentation>
+                  an optional attribute that can be used to create category hierarchy
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="editorWizard">
+      <annotation>
+         <appinfo>
+            <meta.element labelAttribute="name" icon="icon"/>
+         </appinfo>
+         <documentation>
+            a wizard that can be used to edit an existing extension from within the plug-in manifest editor
+         </documentation>
+      </annotation>
+      <complexType>
+         <sequence>
+            <element ref="description" minOccurs="0" maxOccurs="1"/>
+         </sequence>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  a unique name that will be used to identify this wizard.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  a translatable name that will be used in UI representation
+of this wizard.
+               </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="icon" type="string">
+            <annotation>
+               <documentation>
+                  a relative path of an icon that will be used to visually 
+represent the wizard.
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="resource"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="class" type="string" use="required">
+            <annotation>
+               <documentation>
+                  a fully qualified name of a class which implements 
+&lt;samp&gt;org.eclipse.pde.ui.IExtensionEditorWizard&lt;/samp&gt; 
+interface.
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn="org.eclipse.pde.ui.IExtensionEditorWizard"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  a fully qualified identifier of the extension point that this wizard is capable of editing
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="wizard">
+      <annotation>
+         <appinfo>
+            <meta.element labelAttribute="name" icon="icon"/>
+         </appinfo>
+         <documentation>
+            a wizard that can be used to create a new extension from within the plug-in manifest editor
+         </documentation>
+      </annotation>
+      <complexType>
+         <sequence>
+            <element ref="description" minOccurs="0" maxOccurs="1"/>
+         </sequence>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  a unique name that will be used to identify this wizard.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  a translatable name that will be used in UI representation
+of this wizard.
+               </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="icon" type="string">
+            <annotation>
+               <documentation>
+                  a relative path of an icon that will be used to visually 
+represent the wizard.
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="resource"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="class" type="string">
+            <annotation>
+               <documentation>
+                  a fully qualified name of a class which implements 
+&lt;samp&gt;org.eclipse.pde.ui.IExtensionWizard&lt;/samp&gt; 
+interface. This attribute is mutually exclusive with the &lt;code&gt;template&lt;/code&gt; attribute.
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn="org.eclipse.pde.ui.IExtensionWizard"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="availableAsShortcut" type="boolean">
+            <annotation>
+               <documentation>
+                  If &lt;samp&gt;true&lt;/samp&gt;, this wizard will appear in the
+short cut menu on the menu bar and the tool bar.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="category" type="string">
+            <annotation>
+               <documentation>
+                  an optional id that makes this wizard a member of the
+previously defined category. If category is hierarchical,
+full path to the parent category should be specified
+using &apos;/&apos; as a delimiter.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="template" type="string">
+            <annotation>
+               <documentation>
+                  an identifier of a template declared elsewhere using the extension point &lt;code&gt;org.eclipse.pde.ui.templates&lt;/code&gt;. If defined, the template with the specified id will be located and the extension wizard will be created using the template. This attribute is mutually exclusive with the &lt;code&gt;class&lt;/code&gt; attribute.
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="description" type="string">
+      <annotation>
+         <appinfo>
+            <meta.element translatable="true"/>
+         </appinfo>
+         <documentation>
+            A short description of this wizard.
+         </documentation>
+      </annotation>
+   </element>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="since"/>
+      </appinfo>
+      <documentation>
+         [Enter the first release in which this extension point appears.]
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="examples"/>
+      </appinfo>
+      <documentation>
+         [Enter extension point usage example here.]
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="apiinfo"/>
+      </appinfo>
+      <documentation>
+         [Enter API information here.]
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="implementation"/>
+      </appinfo>
+      <documentation>
+         [Enter information about supplied implementation of this extension point.]
+      </documentation>
+   </annotation>
+
+
+</schema>
