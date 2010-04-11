@@ -21,6 +21,7 @@ import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.Path;
 import org.hyperic.hypclipse.internal.HQDEPluginImages;
+import org.hyperic.hypclipse.internal.IConstants;
 import org.hyperic.hypclipse.internal.editor.build.WorkspaceBuildModel;
 import org.hyperic.hypclipse.internal.export.PluginExportJob;
 import org.hyperic.hypclipse.plugin.IBuild;
@@ -262,7 +263,8 @@ public class PluginExportWizard extends AntGeneratingExportWizard {
 		Object first =  fSelection.getFirstElement();
 		IFile file = (IFile) first;
 		IContainer dir = file.getParent();
-		file = dir.getFile(new Path("hqbuild.properties"));
+		file = file.getProject().getFile(IConstants.BUILD_FILENAME_DESCRIPTOR);
+//		file = dir.getFile(new Path("hqbuild.properties"));
 		WorkspaceBuildModel bModel = new WorkspaceBuildModel(file);
 		bModel.load();
 		IBuild fBuild = bModel.getBuild();
@@ -279,8 +281,9 @@ public class PluginExportWizard extends AntGeneratingExportWizard {
 	private String getSourcePath() {
 		Object first =  fSelection.getFirstElement();
 		IFile file = (IFile) first;
+		file = file.getProject().getFile(IConstants.BUILD_FILENAME_DESCRIPTOR);
 		IContainer dir = file.getParent();
-		file = dir.getFile(new Path("hqbuild.properties"));
+//		file = dir.getFile(new Path("hqbuild.properties"));
 		WorkspaceBuildModel bModel = new WorkspaceBuildModel(file);
 		bModel.load();
 		IBuild fBuild = bModel.getBuild();

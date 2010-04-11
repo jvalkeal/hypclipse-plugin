@@ -76,7 +76,7 @@ public class BuildChecker extends IncrementalProjectBuilder {
 		monitor.beginTask("HQDEMessages.ManifestConsistencyChecker_builderTaskName", getWorkAmount(type));
 		if ((type & PLUGIN) != 0) {
 			IProject project = getProject();
-			IFile file = project.getFile("hq-plugin.xml");
+			IFile file = project.getFile("etc/hq-plugin.xml");
 			if (file.exists()) {
 				validateFiles(file, type, monitor);
 			}

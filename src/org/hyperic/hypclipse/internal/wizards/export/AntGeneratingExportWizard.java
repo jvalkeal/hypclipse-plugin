@@ -115,6 +115,7 @@ public abstract class AntGeneratingExportWizard extends BaseExportWizard {
 				setDefaultValues(dir, buildFilename);
 			}
 		} catch (IOException e) {
+			HQDEPlugin.logException(e);
 		}
 	}
 
@@ -137,6 +138,7 @@ public abstract class AntGeneratingExportWizard extends BaseExportWizard {
 				}
 			}
 		} catch (CoreException e) {
+			HQDEPlugin.logException(e);
 		}
 	}
 

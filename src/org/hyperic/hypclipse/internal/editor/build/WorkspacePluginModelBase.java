@@ -18,7 +18,9 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -35,6 +37,7 @@ import org.hyperic.hypclipse.internal.hqmodel.IHQPlatform;
 import org.hyperic.hypclipse.internal.hqmodel.IHQScript;
 import org.hyperic.hypclipse.internal.hqmodel.IHQServer;
 import org.hyperic.hypclipse.internal.plugin.PluginBase;
+import org.hyperic.hypclipse.internal.util.CoreUtility;
 import org.hyperic.hypclipse.plugin.IBuildModel;
 import org.hyperic.hypclipse.plugin.IEditableModel;
 import org.hyperic.hypclipse.plugin.IModelChangedEvent;
@@ -145,6 +148,10 @@ public class WorkspacePluginModelBase extends AbstractPluginModelBase implements
 			if (fUnderlyingResource.exists()) {
 				fUnderlyingResource.setContents(stream, false, false, null);
 			} else {
+				IContainer p = fUnderlyingResource.getParent();
+				if(p instanceof IFolder) {
+					((IFolder)p).create(false, true, null);
+				}
 				fUnderlyingResource.create(stream, false, null);
 			}
 			stream.close();

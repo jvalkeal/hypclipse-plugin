@@ -133,7 +133,8 @@ public class NewProjectCreationOperation extends WorkspaceModifyOperation {
 	 * @throws CoreException
 	 */
 	private void createPluginDescriptor(IProject project) throws CoreException {
-		fModel = new WorkspacePluginModelBase(project.getFile("hq-plugin.xml"), false);
+		IFile file = project.getFile("etc/hq-plugin.xml");
+		fModel = new WorkspacePluginModelBase(file, false);
 		IPluginBase pluginBase = fModel.getPluginBase();
 		
 		pluginBase.setPackage(fData.getPackageName());

@@ -26,6 +26,7 @@ import org.eclipse.ui.part.FileEditorInput;
 import org.hyperic.hypclipse.internal.HQDEMessages;
 import org.hyperic.hypclipse.internal.HQDEPlugin;
 import org.hyperic.hypclipse.internal.HQDEPluginImages;
+import org.hyperic.hypclipse.internal.IConstants;
 import org.hyperic.hypclipse.internal.IHQDEConstants;
 import org.hyperic.hypclipse.internal.context.InputContext;
 import org.hyperic.hypclipse.internal.context.InputContextManager;
@@ -88,7 +89,9 @@ public class HQDEPluginEditor extends HQDELauncherFormEditor {
 		String name = file.getName().toLowerCase(Locale.ENGLISH);
 		if (name.equals("hq-plugin.xml")) {
 			pluginFile = file;
-			buildFile = container.getFile(new Path("hqbuild.properties"));
+			
+			buildFile = pluginFile.getProject().getFile(IConstants.BUILD_FILENAME_DESCRIPTOR); 
+//			buildFile = container.getFile(new Path("hqbuild.properties"));
 		}
 
 		if (pluginFile.exists()) {
