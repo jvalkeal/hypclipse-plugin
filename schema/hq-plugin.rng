@@ -119,9 +119,11 @@ Name of the platform.
 		<a:documentation>
 classpath tag contains set of include elements. These are used to add content to plugins classpath.
 </a:documentation>
-		<rng:element name="include">
-			<rng:ref name="includeType" />
-		</rng:element>
+		<rng:oneOrMore>
+			<rng:element name="include">
+				<rng:ref name="includeType" />
+			</rng:element>
+		</rng:oneOrMore>
 	</rng:define>
 	<rng:define name="includeType">
 		<a:documentation>
