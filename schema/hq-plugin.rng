@@ -534,6 +534,7 @@ Defines a function that the plugin performs for a resource type, and the class t
 				<rng:value>responsetime</rng:value>
 				<rng:value>config_track</rng:value>
 				<rng:value>collector</rng:value>
+				<rng:value>livedata</rng:value>
 			</rng:choice>
 		</rng:attribute>
 		<rng:optional>
